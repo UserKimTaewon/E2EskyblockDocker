@@ -1,7 +1,8 @@
 #based on shakapark/Minecraft-Enigmatica2-Server 
 #also on  Antopower/enigmatica2expert
 
-FROM amazoncorretto:8-alpine3.15-jre
+FROM eclipse-temurin:8-alpine
+#FROM amazoncorretto:8-alpine3.15-jre
 #FROM amazoncorretto:8
 
 ENV MOTD="Minecraft Server: Enigmatica2ExpertSkyblock"
@@ -18,8 +19,8 @@ ENV MAXPLAYERS=8
 RUN addgroup --gid 1234 minecraft
 RUN adduser --disabled-password -h /home/minecraft/E2Esky -u 1234 -G minecraft -g "any_minecraft_user" minecraft
 
-#RUN apk update && apk upgrade
-#RUN apk add bash
+RUN apk update && apk upgrade
+RUN apk add bash
 
 #RUN yum update 
 
