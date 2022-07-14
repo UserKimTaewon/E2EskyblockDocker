@@ -1,9 +1,9 @@
 #based on shakapark/Minecraft-Enigmatica2-Server 
 #also on  Antopower/enigmatica2expert
 
-FROM eclipse-temurin:8-alpine
+#FROM eclipse-temurin:8
 #FROM amazoncorretto:8-alpine3.15-jre
-#FROM amazoncorretto:8
+FROM amazoncorretto:8
 
 ENV MOTD="Minecraft Server: Enigmatica2ExpertSkyblock"
 
@@ -16,23 +16,25 @@ ENV MAXPLAYERS=8
 #ENV VIEWDISTANCE=10
 #ENV HARDCORE=false
 
+#RUN apk update && apk upgrade
+#RUN apk add bash
+
+#RUN apt-get update
+
+RUN yum -y update && yum install -y shadow-utils
+
 RUN addgroup --gid 1234 minecraft
 RUN adduser --disabled-password -h /home/minecraft/E2Esky -u 1234 -G minecraft -g "any_minecraft_user" minecraft
-
-RUN apk update && apk upgrade
-RUN apk add bash
-
-#RUN yum update 
 
 #Couldn't download Cursforge's server pack in command line, so Manually added one.
 ADD Server.zip /home/minecraft/E2Esky/Server.zip
 
-RUN cd /home && mkdir -p minecraft/E2Esky && cd minecraft/E2Esky && \
-	unzip Server.zip &&\
-	rm Server.zip
 #RUN cd /home && mkdir -p minecraft/E2Esky && cd minecraft/E2Esky && \
-#	gpg-zip Server.zip . &&\
+#	unzip Server.zip &&\
 #	rm Server.zip
+RUN cd /home && mkdir -p minecraft/E2Esky && cd minecraft/E2Esky && \
+	gpg-zip Server.zip . &&\
+	rm Server.zip
 
 
 ADD newsettings.cfg /home/minecraft/E2Esky/settings.cfg
