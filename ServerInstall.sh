@@ -73,8 +73,20 @@ install_server(){
 			export URL="${FORGEURL}"
 		fi
 		echo $URL
-		echo "DEBUG: (wget) Downloading ${URL}"
-		wget -O installer.jar "${URL}"
+		which wget >> /dev/null
+		if [ $? -eq 0 ]; then
+			echo "DEBUG: (wget) Downloading ${URL}" >>serverstart.log 2>&1
+			wget -O installer.jar "${URL}" >>serverstart.log 2>&1
+		else
+			which curl >> /dev/null
+			if [ $? -eq 0 ]; then
+				echo "DEBUG: (curl) Downloading ${URL}" >>serverstart.log 2>&1
+				curl -o installer.jar "${URL}" >>serverstart.log 2>&1
+			else
+				echo "Neither wget or curl were found on your system. Please install one and try again"
+				echo "ERROR: Neither wget or curl were found" >>serverstart.log 2>&1
+			fi
+		fi
 	fi
 
 	if [ ! -f installer.jar ]; then
