@@ -3,7 +3,8 @@
 
 #FROM eclipse-temurin:8
 #FROM amazoncorretto:8-alpine3.15-jre
-FROM amazoncorretto:8
+#FROM amazoncorretto:8
+FROM ibmjava:8-jre
 
 ENV MOTD="Minecraft Server: Enigmatica2ExpertSkyblock"
 
@@ -21,20 +22,25 @@ ENV MAXPLAYERS=8
 
 #RUN apt-get update
 
-RUN yum -y update && yum install -y shadow-utils
+RUN yum -y update && yum install -y shadow-utils unzip bash
 
-RUN addgroup --gid 1234 minecraft
-RUN adduser --disabled-password -h /home/minecraft/E2Esky -u 1234 -G minecraft -g "any_minecraft_user" minecraft
 
 #Couldn't download Cursforge's server pack in command line, so Manually added one.
 ADD Server.zip /home/minecraft/E2Esky/Server.zip
 
-#RUN cd /home && mkdir -p minecraft/E2Esky && cd minecraft/E2Esky && \
-#	unzip Server.zip &&\
-#	rm Server.zip
 RUN cd /home && mkdir -p minecraft/E2Esky && cd minecraft/E2Esky && \
-	gpg-zip Server.zip . &&\
+	unzip Server.zip &&\
 	rm Server.zip
+#RUN cd /home && mkdir -p minecraft/E2Esky && cd minecraft/E2Esky && \
+#	gpg-zip Server.zip . &&\
+#	rm Server.zip
+
+
+#RUN useradd -b /home/minecraft/E2Esky -u 123 --user-group minceraft
+
+RUN addgroup --gid 1234 minecraft
+#RUN adduser --disabled-password -h /home/minecraft/E2Esky -u 1234 -G minecraft -g "any_minecraft_user" minecraft
+RUN adduser --disabled-password --home /home/minecraft/E2Esky -uid 1234 --ingroup minecraft --gecos "any_minecraft_user" minecraft
 
 
 ADD newsettings.cfg /home/minecraft/E2Esky/settings.cfg
