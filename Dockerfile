@@ -20,9 +20,9 @@ ENV MAXPLAYERS=8
 #RUN apk update && apk upgrade
 #RUN apk add bash
 
-#RUN apt-get update
-
-RUN yum -y update && yum install -y shadow-utils unzip bash
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get install unzip
+#RUN yum -y update && yum install -y shadow-utils unzip bash
 
 
 #Couldn't download Cursforge's server pack in command line, so Manually added one.
